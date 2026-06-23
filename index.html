@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Tiempo Juntos ❤️</title>
+    <style>
+        /* Estilos Generales y Fondo */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffe5ec 0%, #ffb3c6 50%, #ff85a1 100%);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Efecto Glassmorphism para la Tarjeta */
+        .container {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px 0 rgba(255, 75, 110, 0.15);
+            text-align: center;
+            max-width: 90%;
+            width: 550px;
+            animation: fadeIn 1.5s ease-out;
+            z-index: 10;
+        }
+
+        h1 {
+            color: #d90429;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .subtitle {
+            color: #4a5568;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        /* Grid del Contador */
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .time-box {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 1rem 0.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .time-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 75, 110, 0.15);
+        }
+
+        .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2b2d42;
+            display: block;
+            /* Animación suave cuando cambia el número */
+            transition: all 0.2s ease-in-out; 
+        }
+
+        .label {
+            font-size: 0.85rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.2rem;
+            display: block;
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Corazones flotantes de fondo */
+        .heart {
+            position: absolute;
+            color: rgba(255, 75, 110, 0.3);
+            font-size: 1.5rem;
+            animation: float 6s linear infinite;
+            bottom: -50px;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Responsivo para pantallas pequeñas */
+        @media (max-width: 480px) {
+            .countdown-grid { grid-template-columns: repeat(2, 1fr); }
+            h1 { font-size: 1.8rem; }
+            .container { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Nuestro Tiempo Juntos ❤️</h1>
+        <p class="subtitle">Cada segundo a tu lado ha sido perfecto</p>
+        
+        <div class="countdown-grid">
+            <div class="time-box"><span class="number" id="years">00</span><span class="label">Años</span></div>
+            <div class="time-box"><span class="number" id="months">00</span><span class="label">Meses</span></div>
+            <div class="time-box"><span class="number" id="days">00</span><span class="label">Días</span></div>
+            <div class="time-box"><span class="number" id="hours">00</span><span class="label">Horas</span></div>
+            <div class="time-box"><span class="number" id="minutes">00</span><span class="label">Minutos</span></div>
+            <div class="time-box"><span class="number" id="seconds">00</span><span class="label">Segundos</span></div>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN: Pon aquí tu fecha de aniversario exacta (Año-Mes-DíaTHora:Minutos:Segundos)
+        const fechaAniversario = new Date('2026-03-23T19:30:00'); 
+
+        function actualizarContador() {
+            const ahora = new Date();
+            
+            // Si por alguna razón la fecha de aniversario es futura
+            if (ahora < fechaAniversario) return;
+
+            let anos = ahora.getFullYear() - fechaAniversario.getFullYear();
+            let meses = ahora.getMonth() - fechaAniversario.getMonth();
+            let dias = ahora.getDate() - fechaAniversario.getDate();
+            let horas = ahora.getHours() - fechaAniversario.getHours();
+            let minutos = ahora.getMinutes() - fechaAniversario.getMinutes();
+            let segundos = ahora.getSeconds() - fechaAniversario.getSeconds();
+
+            // Ajustes matemáticos para desfases de tiempo (calendario real)
+            if (segundos < 0) { segundos += 60; minutos--; }
+            if (minutos < 0) { minutos += 60; horas--; }
+            if (horas < 0) { horas += 24; dias--; }
+            if (dias < 0) {
+                // Obtener el último día del mes anterior
+                const mesAnterior = new Date(ahora.getFullYear(), ahora.getMonth(), 0);
+                dias += mesAnterior.getDate();
+                meses--;
+            }
+            if (meses < 0) { meses += 12; anos--; }
+
+            // Inyectar los valores en el HTML formateados con dos dígitos
+            document.getElementById('years').innerText = String(anos).padStart(2, '0');
+            document.getElementById('months').innerText = String(meses).padStart(2, '0');
+            document.getElementById('days').innerText = String(dias).padStart(2, '0');
+            document.getElementById('hours').innerText = String(horas).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutos).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(segundos).padStart(2, '0');
+        }
+
+        // Sistema dinámico de corazones flotantes en el fondo
+        function crearCorazon() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's'; // Entre 4 y 7 segundos
+            heart.style.fontSize = Math.random() * 10 + 15 + 'px'; // Tamaños variados
+            
+            document.body.appendChild(heart);
+
+            // Eliminar el corazón del DOM después de que termine la animación
+            setTimeout(() => { heart.remove(); }, 7000);
+        }
+
+        // Inicialización y Loops
+        actualizarContador();
+        setInterval(actualizarContador, 1000); // Actualiza el reloj cada segundo
+        setInterval(crearCorazon, 400); // Genera corazones de fondo continuamente
+    </script>
+</body>
+</html>
